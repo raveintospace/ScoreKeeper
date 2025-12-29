@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Scoreboard {
+nonisolated struct Scoreboard {
 
     var players: [Player] = [
         Player(name: "Dani", score: 0),
@@ -17,5 +17,9 @@ struct Scoreboard {
 
     var state = GameState.setup
 
-    mutating func resetScores(to newValue: Int) {}
+    mutating func resetScores(to newValue: Int) {
+        for index in 0..<players.count {
+            players[index].score = newValue
+        }
+    }
 }
