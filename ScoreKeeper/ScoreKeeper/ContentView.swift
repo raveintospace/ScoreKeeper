@@ -32,7 +32,7 @@ struct ContentView: View {
                         TextField("Name", text: $player.name)
                         Text("\(player.score)")
                             .foregroundStyle(Color(player.color))
-                        Stepper("\(player.score)", value: $player.score)
+                        Stepper("\(player.score)", value: $player.score, in: 0...20)
                             .labelsHidden()
                     }
                 }
