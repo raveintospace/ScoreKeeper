@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum GameState {
+nonisolated enum GameState {
     case setup
     case playing
     case gameOver
