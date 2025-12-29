@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var players: [Player] = [Player(name: "Dani", score: 0, color: .blue),
-                                            Player(name: "Larry", score: 0, color: .red),
-                                            Player(name: "Oscar", score: 0, color: .orange)]
+
+    @State private var scoreboard: Scoreboard = Scoreboard()
+
+    private var startingPoints: Int = 0
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -27,11 +28,10 @@ struct ContentView: View {
                 }
                 .font(.headline)
 
-                ForEach($players) { $player in
+                ForEach($scoreboard.players) { $player in
                     GridRow {
                         TextField("Name", text: $player.name)
                         Text("\(player.score)")
-                            .foregroundStyle(Color(player.color))
                         Stepper("\(player.score)", value: $player.score, in: 0...20)
                             .labelsHidden()
                     }
@@ -40,10 +40,26 @@ struct ContentView: View {
             .padding(.vertical)
 
             Button("Add Player", systemImage: "plus") {
-                players.append(Player(name: "", score: 0, color: .black))
+                scoreboard.players.append(Player(name: "", score: 0))
             }
 
             Spacer()
+
+            switch scoreboard.state {
+            case .setup:
+                Button("Start Game", systemImage: "play.fill") {
+                    scoreboard.state = .playing
+                    scoreboard.resetScores(to: startingPoints)
+                }
+            case .playing:
+                Button("End Game", systemImage: "stop.fill") {
+                    scoreboard.state = .gameOver
+                }
+            case .gameOver:
+                Button("Reset Game", systemImage: "arrow.counterclockwise") {
+                    scoreboard.state = .setup
+                }
+            }
         }
         .padding()
     }
